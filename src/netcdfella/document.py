@@ -4,6 +4,7 @@ Document module defines documents that get manipulated by netcdfella.
 from functools import partial
 from os import path
 
+import matplotlib.colors as clrs
 import matplotlib.pyplot as plt
 import numpy as np
 from ncplot import view
@@ -49,6 +50,12 @@ class NetCDF(Document):
     def exclude_variables(self, exclusions):
         "exclude netcdf variables from netcdf file reading."
         self.excluded_variables.update(exclusions)
+
+    def get_dim(self, name):
+        "get_dim returns a dimension by name"
+        for dim in self.dimensions:
+            if dim.name == name:
+                return dim
 
     def read(self):
         "Reads the contents of a netcdf file."
@@ -100,31 +107,39 @@ class NetCDF(Document):
             out_dir = path.splitext(self.path)[0] + ".html"
         view(self.path, var=variable, out=out_dir, quadmesh=True)
 
-    def to_img_scatter(self, title, longitude_name, latitude_name,
-                       variable_name, resolution="i", latitude0=0,
+    def to_img_scatter(self, title, dim_name, longitude_name,
+                       latitude_name, variable_name, resolution="i",
+                       latitude0=0, img_ext="png", plot_samples=3,
                        height=35786000, sphere=(6378137, 6356752.3142),
-                       dot_scale=10, dot_transparency=0.2):
+                       dot_scale=0.01, dot_transparency=0.2, color="magenta",
+                       output_path="./", name_suffix="_scatter"):
         "to_jpeg converts a netcdf image to jpeg"
         map = self._create_map("geos", title, resolution,
                                latitude0, height, sphere)
-        lons, lats = map(self.dataset[longitude_name][:],
-                         self.dataset[latitude_name][:])
+        lons, lats = map(self.get_dim(dim_name).get_variable(longitude_name),
+                         self.get_dim(dim_name).get_variable(latitude_name))
         map.scatter(lons, lats, latlon=False,
-                    s=dot_scale*np.log2(self.dataset[variable_name][:]),
-                    cmap='summer', c=np.log2(self.dataset[variable_name][:]),
-                    alpha=0.2)
-        for a in [100, 300, 500]:
-            map.scatter([], [], c='r', alpha=0.5, s=a,
-                        label=str(a) + ' radiance')
-        plt.legend(scatterpoints=1, frameon=False,
-                   labelspacing=1, loc='lower left')
+                    s=dot_scale*self.get_dim(dim_name)
+                                    .get_variable(variable_name),
+                    c=color,
+                    alpha=dot_transparency)
+        plot_samples = self._get_variable_samples(dim_name,
+                                                  variable_name,
+                                                  plot_samples)
+        for a in plot_samples:
+            map.scatter([], [], c=color, alpha=1, s=dot_scale * a,
+                        label=str(a) + " "+variable_name)
+        plt.legend(scatterpoints=1, frameon=True,
+                   markerscale=2, labelspacing=1, loc=3)
         plt.title(title)
-        plt.savefig("2m_temp.png")
+        plt.savefig(output_path+title+name_suffix+"."+img_ext)
 
     def to_img_marks(self, title, longitude_name, latitude_name,
-                     variable_name, resolution="i", latitude0=0,
-                     height=35786000, sphere=(6378137, 6356752.3142),
-                     dot_scale=10, dot_transparency=0.2):
+                     variable_name, img_ext="png", resolution="i",
+                     latitude0=0, height=35786000, dot_scale=10,
+                     sphere=(6378137, 6356752.3142), dot_transparency=0.2,
+                     marker="x", color="b", output_path="./",
+                     name_suffix="_marks"):
         """
         Creates an image with marks on the map.
         """
@@ -132,9 +147,9 @@ class NetCDF(Document):
                                latitude0, height, sphere)
         lons, lats = map(self.dataset[longitude_name][:],
                          self.dataset[latitude_name][:])
-        map.scatter(lons, lats, marker='x', color='b')
+        map.scatter(lons, lats, marker=marker, color=color)
         plt.title(title)
-        plt.savefig("test_markers.png")
+        plt.savefig(output_path+title+name_suffix+"."+img_ext)
 
     def _create_map(self, kind, title, resolution, latitude0, height, sphere):
         "Creates the instance of a basemap."
@@ -143,6 +158,19 @@ class NetCDF(Document):
         map.set_sat_height(height).set_sphere(sphere).create_map()
         map.draw()
         return map
+
+    def _get_variable_samples(self, dimension, variable, samples):
+        """
+        _get_variable_samples returns some samples of the variable from
+        smaller to bigger value.
+        """
+        var = self.get_dim(dimension).get_variable(variable)
+        var.sort()
+        split_ar = np.split(np.array(var), samples)
+        sample_vals = []
+        for ar in split_ar:
+            sample_vals.append(ar[len(ar)//2])
+        return sample_vals
 
     class Dimension:
         "Dimension describes each dimension of a netcdf file."
@@ -155,3 +183,7 @@ class NetCDF(Document):
         def add_variables(self, name, variable):
             "adds variable data from netcdf file as dictionary."
             self.variables[name] = variable
+
+        def get_variable(self, name):
+            "returns the variable of a dimension"
+            return self.variables[name]

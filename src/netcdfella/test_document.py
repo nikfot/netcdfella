@@ -20,10 +20,24 @@ class TestDocument(unittest.TestCase):
         self.assertTrue(isinstance(test_doc, Document))
 
     def test_read(self):
-        "test_read_netcdf checks if a netcdf file can be read."
+        "test_read checks if a netcdf file can be read."
         doc_path = path.join(path.dirname(__file__), "test_netcdf4.nc")
         test_doc = NetCDF("test", doc_path)
         test_doc.read()
+
+    def test_get_dim(self):
+        "test_get_dim returns the dimension of a netcdf file."
+        doc_path = path.join(path.dirname(__file__), "test_netcdf4.nc")
+        test_doc = NetCDF("test", doc_path)
+        test_doc.read()
+        test_doc.get_dim("flashes")
+
+    def test__get_variable_samples(self):
+        "test_get_variable_samples tests the return of sample values."
+        doc_path = path.join(path.dirname(__file__), "test_netcdf4.nc")
+        test_doc = NetCDF("test", doc_path)
+        test_doc.read()
+        test_doc._get_variable_samples("flashes", "radiance", 5)
 
     def test_to_ascii(self):
         "test_to_ascii writes a netcdf as ascii."
@@ -42,7 +56,8 @@ class TestDocument(unittest.TestCase):
         doc_path = path.join(path.dirname(__file__), "test_netcdf4.nc")
         test_doc = NetCDF("test", doc_path)
         test_doc.read()
-        test_doc.to_img_scatter("title", "longitude", "latitude", "radiance")
+        test_doc.to_img_scatter("title", "flashes",
+                                "longitude", "latitude", "radiance")
 
     def test_to_img_marks(self):
         """
