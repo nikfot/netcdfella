@@ -6,11 +6,12 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Release NetcdFella
+name: Release and Publish
 
 on:
-  release:
-    types: [release]
+  push:
+    tags:        
+      - '*'   
 
 jobs:
   deploy:
