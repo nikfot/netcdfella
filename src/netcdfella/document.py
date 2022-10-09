@@ -49,6 +49,14 @@ class NetCDF(Document):
         "exclude netcdf variables from netcdf file reading."
         self.excluded_variables.update(exclusions)
 
+    def exclude_variables_from_str(self, exclusions):
+        """
+        exclude netcdf variables from netcdf file reading
+        from a comma separated list as string.
+        """
+        exc = exclusions.strip().split(",")
+        self.excluded_variables.update(exc)
+
     def get_dim(self, name):
         "get_dim returns a dimension by name"
         for dim in self.dimensions:

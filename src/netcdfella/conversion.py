@@ -1,4 +1,4 @@
-""" 
+"""
 conversion module provides the tools around converions.
 """
 from os import path

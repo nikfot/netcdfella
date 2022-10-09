@@ -1,1 +1,32 @@
-sudo apt -y install libgeos-dev
+[tool.poetry]
+name = "netcdfella"
+description = "Netcdfella is providing multiple ways to convert netcdf filed into other data types such as ASCII, PNG and JPG, and even create graphs."
+authors = [
+    "Nikos Fotiou <nik_fot@hotmail.gr>" 
+]
+version ="0.1.0"
+homepage = "https://nikfot.github.io/netcdfella/"
+repository = "https://github.com/nikfot/netcdfella"
+readme = "README.md"
+keywords = ["netcdf", "ascii","conversion","png"]
+license = "GPL-3.0-or-later"
+classifiers = [
+    "Topic :: Software Development :: Space Data Processing",
+    "Framework :: Click",
+    "Programming Language :: Python :: 3",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10.4"
+
+[tool.setuptools_scm]
+write_to = "src/cli/__version__.py"
+
+[build-system]
+requires = ["poetry-core>=1.0.0","setuptools>=59.6.0","setuptools-scm>=7.0.5"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+netcdfella = "cli.__main__:main"
+
+#sudo apt -y install libgeos-dev

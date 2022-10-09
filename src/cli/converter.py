@@ -34,15 +34,23 @@ from netcdfella.conversion import Conversion
     default="",
     help="set the variable to use for mapping.",
 )
-def convert(directory, output_dir, output_kinds, map_dimension, map_variable):
+@click.option(
+    "-e",
+    "--exclude-variables",
+    default="timeliness_non_nominal",
+    help="comma separated list of variables to be excluded from conversion."
+)
+def convert(directory, output_dir,
+            output_kinds, map_dimension,
+            map_variable, exclude_variables):
     """
     Convert a file or files in a directory
     """
     print(f">>> Converting file(s) in path: {directory}")
     conversion_proc = Conversion()
-    conversion_proc.document_template.exclude_variables(
-        {"timeliness_non_nominal", "flash_id"}
-    )
+    conversion_proc \
+        .document_template \
+        .exclude_variables_from_str(exclude_variables)
     conversion_proc.enable_output_from_str(output_kinds)
     if map_dimension != "" and map_variable != "":
         conversion_proc.set_map_vars(map_dimension, map_variable)

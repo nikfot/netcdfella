@@ -6,9 +6,9 @@ import click
 from cli import converter, server, watcher
 
 
-@click.group("nefctl")
+@click.group("netcdfella", no_args_is_help=True)
 def cli():
-    """nefctl is the cli for netcdfella.
+    """netcdfella is the cli for netcdfella.
     Use it to convert netcdf files to
     ASCII and jpeg.
     """
