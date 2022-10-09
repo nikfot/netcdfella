@@ -4,7 +4,6 @@ Document module defines documents that get manipulated by netcdfella.
 from functools import partial
 from os import path
 
-import matplotlib.colors as clrs
 import matplotlib.pyplot as plt
 import numpy as np
 from ncplot import view
@@ -23,13 +22,12 @@ class Document:
         self.path = path
         self.input_kind = None
         self.output_path = None
-        self.output_kind = None
 
-    def set_output_kind(self, output_kind):
+    def set_output_kind(self, output_kind: list):
         "Set the format type for the converted document"
         self.output_kind = output_kind
 
-    def set_input_kind(self, input_kind):
+    def set_input_kind(self, input_kind: str):
         "Set the format type for the input document"
         self.input_kind = input_kind
 
@@ -114,7 +112,8 @@ class NetCDF(Document):
                        dot_scale=0.01, dot_transparency=0.2, color="magenta",
                        output_path="./", name_suffix="_scatter"):
         "to_jpeg converts a netcdf image to jpeg"
-        map = self._create_map("geos", title, resolution,
+        plt.clf()
+        map = self._create_map("geos", title+name_suffix, resolution,
                                latitude0, height, sphere)
         lons, lats = map(self.get_dim(dim_name).get_variable(longitude_name),
                          self.get_dim(dim_name).get_variable(latitude_name))
@@ -131,28 +130,29 @@ class NetCDF(Document):
                         label=str(a) + " "+variable_name)
         plt.legend(scatterpoints=1, frameon=True,
                    markerscale=2, labelspacing=1, loc=3)
-        plt.title(title)
+        plt.title(title+name_suffix)
         plt.savefig(output_path+title+name_suffix+"."+img_ext)
 
-    def to_img_marks(self, title, longitude_name, latitude_name,
+    def to_img_marks(self, title, dim_name, longitude_name, latitude_name,
                      variable_name, img_ext="png", resolution="i",
-                     latitude0=0, height=35786000, dot_scale=10,
-                     sphere=(6378137, 6356752.3142), dot_transparency=0.2,
-                     marker="x", color="b", output_path="./",
+                     latitude0=0, height=35786000, marker="x", color="b",
+                     sphere=(6378137, 6356752.3142), output_path="./",
                      name_suffix="_marks"):
         """
         Creates an image with marks on the map.
         """
-        map = self._create_map("geos", title, resolution,
+        plt.clf()
+        map = self._create_map("geos", title+name_suffix, resolution,
                                latitude0, height, sphere)
-        lons, lats = map(self.dataset[longitude_name][:],
-                         self.dataset[latitude_name][:])
+        lons, lats = map(self.get_dim(dim_name).get_variable(longitude_name),
+                         self.get_dim(dim_name).get_variable(latitude_name))
         map.scatter(lons, lats, marker=marker, color=color)
-        plt.title(title)
+        plt.title(title+name_suffix)
         plt.savefig(output_path+title+name_suffix+"."+img_ext)
 
     def _create_map(self, kind, title, resolution, latitude0, height, sphere):
         "Creates the instance of a basemap."
+        map = None
         if kind == "geos":
             map = GeoStationaryMap(title, resolution, latitude0)
         map.set_sat_height(height).set_sphere(sphere).create_map()

@@ -12,6 +12,8 @@ class GeoStationaryMap(Basemap):
         self.name = name
         self.resolution = resolution
         self.latitude0 = latitude0
+        self.satellite_height = None
+        self.sphere = None
 
     def set_sat_height(self, height):
         "adjust the height of the satellite or leave blank for default"
