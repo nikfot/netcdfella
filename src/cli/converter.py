@@ -1,15 +1,14 @@
 """
-watcher module implements the commands for watching a directory
-for file changes.
+converter module contains command on adhoc converting one or more files.
 """
+from os import listdir, path
 
 import click
 
 from netcdfella.conversion import Conversion
-from qnotify.watcher import Watcher
 
 
-@click.command("watch")
+@click.command("convert")
 @click.argument("directory", default="./")
 @click.option(
     "-o",
@@ -35,11 +34,11 @@ from qnotify.watcher import Watcher
     default="",
     help="set the variable to use for mapping.",
 )
-def watch(directory, output_dir, output_kinds, map_dimension, map_variable):
+def convert(directory, output_dir, output_kinds, map_dimension, map_variable):
     """
-    Watch a directory for any new netcdf file and convert it.
+    Convert a file or files in a directory
     """
-    print(f">>> Initiating watching directory: {directory}")
+    print(f">>> Converting file(s) in path: {directory}")
     conversion_proc = Conversion()
     conversion_proc.document_template.exclude_variables(
         {"timeliness_non_nominal", "flash_id"}
@@ -47,6 +46,11 @@ def watch(directory, output_dir, output_kinds, map_dimension, map_variable):
     conversion_proc.enable_output_from_str(output_kinds)
     if map_dimension != "" and map_variable != "":
         conversion_proc.set_map_vars(map_dimension, map_variable)
-    watcher = Watcher("new", directory, conversion_proc.convert_document)
-    watcher.set_notifier()
-    watcher.start()
+    if path.isfile(directory):
+        conversion_proc.convert_document(directory)
+    elif path.isdir(directory):
+        documents = [doc for doc in listdir(directory)
+                     if path.isfile(path.join(directory, doc))]
+        print(f"    ***Running conversion for documents: {documents}")
+        for doc in documents:
+            conversion_proc.convert_document(doc)

@@ -113,6 +113,9 @@ class NetCDF(Document):
                        output_path="./", name_suffix="_scatter"):
         "to_jpeg converts a netcdf image to jpeg"
         plt.clf()
+        output_name = output_path \
+            + title.removesuffix('.nc') \
+            + name_suffix+"."+img_ext
         map = self._create_map("geos", title+name_suffix, resolution,
                                latitude0, height, sphere)
         lons, lats = map(self.get_dim(dim_name).get_variable(longitude_name),
@@ -131,7 +134,7 @@ class NetCDF(Document):
         plt.legend(scatterpoints=1, frameon=True,
                    markerscale=2, labelspacing=1, loc=3)
         plt.title(title+name_suffix)
-        plt.savefig(output_path+title+name_suffix+"."+img_ext)
+        plt.savefig(output_name)
 
     def to_img_marks(self, title, dim_name, longitude_name, latitude_name,
                      variable_name, img_ext="png", resolution="i",
@@ -142,13 +145,16 @@ class NetCDF(Document):
         Creates an image with marks on the map.
         """
         plt.clf()
+        output_name = output_path \
+            + title.removesuffix('.nc') \
+            + name_suffix+"."+img_ext
         map = self._create_map("geos", title+name_suffix, resolution,
                                latitude0, height, sphere)
         lons, lats = map(self.get_dim(dim_name).get_variable(longitude_name),
                          self.get_dim(dim_name).get_variable(latitude_name))
         map.scatter(lons, lats, marker=marker, color=color)
         plt.title(title+name_suffix)
-        plt.savefig(output_path+title+name_suffix+"."+img_ext)
+        plt.savefig(output_name)
 
     def _create_map(self, kind, title, resolution, latitude0, height, sphere):
         "Creates the instance of a basemap."

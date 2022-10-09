@@ -60,6 +60,9 @@ class Conversion:
 
     def convert_document(self, document):
         "converts a document to the preselected format."
+        _, file_extension = path.splitext(document)
+        if file_extension.replace(".", "") != self.input_kind:
+            return
         if self.input_kind == "nc":
             document = NetCDF(path.basename(document), document)
             document.read()

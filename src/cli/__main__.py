@@ -3,7 +3,7 @@ This is the entrypoint to netcdfella app.
 """
 import click
 
-from cli import server, watcher
+from cli import converter, server, watcher
 
 
 @click.group("nefctl")
@@ -18,6 +18,7 @@ def main():
     "main is the entrypoint to netcdfella app"
     cli.add_command(watcher.watch)
     cli.add_command(server.serve)
+    cli.add_command(converter.convert)
     cli(prog_name="nefctl")
 
 
