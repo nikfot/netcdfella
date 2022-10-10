@@ -21,7 +21,7 @@ classifiers = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.10.4"
+python = ">=3.10.4,<3.12"
 
 [tool.setuptools_scm]
 write_to = "netcdfella/cli/__version__.py"
