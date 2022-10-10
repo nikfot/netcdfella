@@ -5,8 +5,8 @@ import asyncio
 
 from pyinotify import ALL_EVENTS, AsyncioNotifier, WatchManager
 
-from qnotify.event_processor import EventHandler
-from qnotify.queues import Consumer
+from netcdfella.qnotify.event_processor import EventHandler
+from netcdfella.qnotify.queues import Consumer
 
 
 # A Watcher is a thing that watches a directory.

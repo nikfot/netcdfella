@@ -141,6 +141,14 @@ _You can install from source or from pypi_
    netcdfella --help
    ```
 
+#### PYPI
+
+Use PYPI to pip install the project:
+
+    ```sh
+    pip install netcdfella
+    ```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->

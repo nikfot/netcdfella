@@ -4,7 +4,7 @@ description = "Netcdfella is providing multiple ways to convert netcdf filed int
 authors = [
     "Nikos Fotiou <nik_fot@hotmail.gr>" 
 ]
-version ="0.1.0"
+version ="0.3.0"
 homepage = "https://nikfot.github.io/netcdfella/"
 repository = "https://github.com/nikfot/netcdfella"
 readme = "README.md"
@@ -24,13 +24,13 @@ classifiers = [
 python = "^3.10.4"
 
 [tool.setuptools_scm]
-write_to = "src/cli/__version__.py"
+write_to = "netcdfella/cli/__version__.py"
 
 [build-system]
 requires = ["poetry-core>=1.0.0","setuptools>=59.6.0","setuptools-scm>=7.0.5"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-netcdfella = "cli.__main__:main"
+netcdfella = "netcdfella.cli.__main__:main"
 
 #sudo apt -y install libgeos-dev

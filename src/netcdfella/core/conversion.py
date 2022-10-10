@@ -3,7 +3,7 @@ conversion module provides the tools around converions.
 """
 from os import path
 
-from netcdfella.document import NetCDF
+from netcdfella.core.document import NetCDF
 
 
 class Conversion:
@@ -42,8 +42,9 @@ class Conversion:
         """
         self._create_marks_map = True
 
-    def set_map_vars(self, dimension=None, variable=None,
-                     longitude="longitude", latitude="latitude"):
+    def set_map_vars(
+        self, dimension=None, variable=None, longitude="longitude", latitude="latitude"
+    ):
         "sets the variables for a map."
         self.map_dimension = dimension
         self.map_variable = variable
@@ -74,14 +75,22 @@ class Conversion:
                 document.to_graph()
             if self._create_scatter_map:
                 print(f"    *** [ converting {document.name} to scatter map ]")
-                document.to_img_scatter(document.name, self.map_dimension,
-                                        self.map_longitude, self.map_latitude,
-                                        self.map_variable)
+                document.to_img_scatter(
+                    document.name,
+                    self.map_dimension,
+                    self.map_longitude,
+                    self.map_latitude,
+                    self.map_variable,
+                )
             if self._create_marks_map:
                 print(f"    *** [ converting {document.name} to marks map ]")
-                document.to_img_marks(document.name, self.map_dimension,
-                                      self.map_longitude, self.map_latitude,
-                                      self.map_variable)
+                document.to_img_marks(
+                    document.name,
+                    self.map_dimension,
+                    self.map_longitude,
+                    self.map_latitude,
+                    self.map_variable,
+                )
 
     def enable_output_from_str(self, output_kinds):
         """

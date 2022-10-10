@@ -4,7 +4,7 @@ Documents' module unit tests.
 import unittest
 from os import path
 
-from netcdfella.document import Document, NetCDF
+from netcdfella.core.document import Document, NetCDF
 
 
 class TestDocument(unittest.TestCase):
@@ -56,19 +56,17 @@ class TestDocument(unittest.TestCase):
         doc_path = path.join(path.dirname(__file__), "test_netcdf4.nc")
         test_doc = NetCDF("test", doc_path)
         test_doc.read()
-        test_doc.to_img_scatter("title", "flashes",
-                                "longitude", "latitude", "radiance")
+        test_doc.to_img_scatter("title", "flashes", "longitude", "latitude", "radiance")
 
     def test_to_img_marks(self):
         """
         This function takes a list of x and y coordinates scatters
         marks on the map plot.
         """
-        "test_to_ascii writes a netcdf as ascii."
         doc_path = path.join(path.dirname(__file__), "test_netcdf4.nc")
         test_doc = NetCDF("test", doc_path)
         test_doc.read()
-        test_doc.to_img_marks("title", "longitude", "latitude", "radiance")
+        test_doc.to_img_marks("title", "flashes", "longitude", "latitude", "radiance")
 
     def test_to_graph(self):
         "test_to_graph checks the function to_graph."

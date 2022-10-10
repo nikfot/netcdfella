@@ -9,7 +9,7 @@ import numpy as np
 from ncplot import view
 from netCDF4 import Dataset
 
-from netcdfella.maps import GeoStationaryMap
+from netcdfella.core.maps import GeoStationaryMap
 
 
 class Document:
@@ -70,15 +70,13 @@ class NetCDF(Document):
         for dim in self.dataset.dimensions:
             # pylint: disable=unsubscriptable-object
             new_dimension = self.Dimension(
-                self.dataset.dimensions[dim].name,
-                self.dataset.dimensions[dim].size
+                self.dataset.dimensions[dim].name, self.dataset.dimensions[dim].size
             )
             # pylint: disable=no-member
             for k in self.dataset.variables.keys():
                 if k not in self.excluded_variables:
                     # pylint: disable=unsubscriptable-object
-                    new_dimension.add_variables(k,
-                                                self.dataset.variables[k][:])
+                    new_dimension.add_variables(k, self.dataset.variables[k][:])
             self.dimensions.append(new_dimension)
 
     def to_ascii(self):
@@ -113,55 +111,92 @@ class NetCDF(Document):
             out_dir = path.splitext(self.path)[0] + ".html"
         view(self.path, var=variable, out=out_dir, quadmesh=True)
 
-    def to_img_scatter(self, title, dim_name, longitude_name,
-                       latitude_name, variable_name, resolution="i",
-                       latitude0=0, img_ext="png", plot_samples=3,
-                       height=35786000, sphere=(6378137, 6356752.3142),
-                       dot_scale=0.01, dot_transparency=0.2, color="magenta",
-                       output_path="./", name_suffix="_scatter"):
+    def to_img_scatter(
+        self,
+        title,
+        dim_name,
+        longitude_name,
+        latitude_name,
+        variable_name,
+        resolution="i",
+        latitude0=0,
+        img_ext="png",
+        plot_samples=3,
+        height=35786000,
+        sphere=(6378137, 6356752.3142),
+        dot_scale=0.01,
+        dot_transparency=0.2,
+        color="magenta",
+        output_path="./",
+        name_suffix="_scatter",
+    ):
         "to_jpeg converts a netcdf image to jpeg"
         plt.clf()
-        output_name = output_path \
-            + title.removesuffix('.nc') \
-            + name_suffix+"."+img_ext
-        map = self._create_map("geos", title+name_suffix, resolution,
-                               latitude0, height, sphere)
-        lons, lats = map(self.get_dim(dim_name).get_variable(longitude_name),
-                         self.get_dim(dim_name).get_variable(latitude_name))
-        map.scatter(lons, lats, latlon=False,
-                    s=dot_scale*self.get_dim(dim_name)
-                                    .get_variable(variable_name),
-                    c=color,
-                    alpha=dot_transparency)
-        plot_samples = self._get_variable_samples(dim_name,
-                                                  variable_name,
-                                                  plot_samples)
+        output_name = (
+            output_path + title.removesuffix(".nc") + name_suffix + "." + img_ext
+        )
+        map = self._create_map(
+            "geos", title + name_suffix, resolution, latitude0, height, sphere
+        )
+        lons, lats = map(
+            self.get_dim(dim_name).get_variable(longitude_name),
+            self.get_dim(dim_name).get_variable(latitude_name),
+        )
+        map.scatter(
+            lons,
+            lats,
+            latlon=False,
+            s=dot_scale * self.get_dim(dim_name).get_variable(variable_name),
+            c=color,
+            alpha=dot_transparency,
+        )
+        plot_samples = self._get_variable_samples(dim_name, variable_name, plot_samples)
         for a in plot_samples:
-            map.scatter([], [], c=color, alpha=1, s=dot_scale * a,
-                        label=str(a) + " "+variable_name)
-        plt.legend(scatterpoints=1, frameon=True,
-                   markerscale=2, labelspacing=1, loc=3)
-        plt.title(title+name_suffix)
+            map.scatter(
+                [],
+                [],
+                c=color,
+                alpha=1,
+                s=dot_scale * a,
+                label=str(a) + " " + variable_name,
+            )
+        plt.legend(scatterpoints=1, frameon=True, markerscale=2, labelspacing=1, loc=3)
+        plt.title(title + name_suffix)
         plt.savefig(output_name)
 
-    def to_img_marks(self, title, dim_name, longitude_name, latitude_name,
-                     variable_name, img_ext="png", resolution="i",
-                     latitude0=0, height=35786000, marker="x", color="b",
-                     sphere=(6378137, 6356752.3142), output_path="./",
-                     name_suffix="_marks"):
+    def to_img_marks(
+        self,
+        title,
+        dim_name,
+        longitude_name,
+        latitude_name,
+        variable_name,
+        img_ext="png",
+        resolution="i",
+        latitude0=0,
+        height=35786000,
+        marker="x",
+        color="b",
+        sphere=(6378137, 6356752.3142),
+        output_path="./",
+        name_suffix="_marks",
+    ):
         """
         Creates an image with marks on the map.
         """
         plt.clf()
-        output_name = output_path \
-            + title.removesuffix('.nc') \
-            + name_suffix+"."+img_ext
-        map = self._create_map("geos", title+name_suffix, resolution,
-                               latitude0, height, sphere)
-        lons, lats = map(self.get_dim(dim_name).get_variable(longitude_name),
-                         self.get_dim(dim_name).get_variable(latitude_name))
+        output_name = (
+            output_path + title.removesuffix(".nc") + name_suffix + "." + img_ext
+        )
+        map = self._create_map(
+            "geos", title + name_suffix, resolution, latitude0, height, sphere
+        )
+        lons, lats = map(
+            self.get_dim(dim_name).get_variable(longitude_name),
+            self.get_dim(dim_name).get_variable(latitude_name),
+        )
         map.scatter(lons, lats, marker=marker, color=color)
-        plt.title(title+name_suffix)
+        plt.title(title + name_suffix)
         plt.savefig(output_name)
 
     def _create_map(self, kind, title, resolution, latitude0, height, sphere):
@@ -183,7 +218,7 @@ class NetCDF(Document):
         split_ar = np.split(np.array(var), samples)
         sample_vals = []
         for ar in split_ar:
-            sample_vals.append(ar[len(ar)//2])
+            sample_vals.append(ar[len(ar) // 2])
         return sample_vals
 
     class Dimension:

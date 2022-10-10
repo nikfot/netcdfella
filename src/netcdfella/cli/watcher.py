@@ -5,8 +5,8 @@ for file changes.
 
 import click
 
-from netcdfella.conversion import Conversion
-from qnotify.watcher import Watcher
+from netcdfella.core.conversion import Conversion
+from netcdfella.qnotify.watcher import Watcher
 
 
 @click.command("watch")
@@ -39,18 +39,17 @@ from qnotify.watcher import Watcher
     "-e",
     "--exclude-variables",
     default="timeliness_non_nominal",
-    help="comma separated list of variables to be excluded from conversion."
+    help="comma separated list of variables to be excluded from conversion.",
 )
-def watch(directory, output_dir, output_kinds,
-          map_dimension, map_variable, exclude_variables):
+def watch(
+    directory, output_dir, output_kinds, map_dimension, map_variable, exclude_variables
+):
     """
     Watch a directory for any new netcdf file and convert it.
     """
     print(f">>> Initiating watching directory: {directory}")
     conversion_proc = Conversion()
-    conversion_proc \
-        .document_template \
-        .exclude_variables_from_str(exclude_variables)
+    conversion_proc.document_template.exclude_variables_from_str(exclude_variables)
     conversion_proc.enable_output_from_str(output_kinds)
     if map_dimension != "" and map_variable != "":
         conversion_proc.set_map_vars(map_dimension, map_variable)

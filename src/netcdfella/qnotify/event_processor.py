@@ -5,7 +5,7 @@ import asyncio
 
 from pyinotify import ProcessEvent
 
-from qnotify.queues import q as queue
+from netcdfella.qnotify.queues import q as queue
 
 
 class EventHandler(ProcessEvent):

@@ -3,7 +3,7 @@ This is the entrypoint to netcdfella app.
 """
 import click
 
-from cli import converter, server, watcher
+from netcdfella.cli import converter, server, watcher
 
 
 @click.group("netcdfella", no_args_is_help=True)
