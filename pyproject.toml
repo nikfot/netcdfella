@@ -4,7 +4,7 @@ description = "Netcdfella is providing multiple ways to convert netcdf filed int
 authors = [
     "Nikos Fotiou <nik_fot@hotmail.gr>" 
 ]
-version ="0.3.0"
+version ="0.3.30"
 homepage = "https://nikfot.github.io/netcdfella/"
 repository = "https://github.com/nikfot/netcdfella"
 readme = "README.md"
