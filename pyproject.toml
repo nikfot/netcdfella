@@ -11,9 +11,13 @@ readme = "README.md"
 keywords = ["netcdf", "ascii","conversion","png"]
 license = "GPL-3.0-or-later"
 classifiers = [
-    "Topic :: Software Development :: Space Data Processing",
-    "Framework :: Click",
-    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Image Processing",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Framework :: AsyncIO",
+    "Framework :: Matplotlib",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
 ]
 
 [tool.poetry.dependencies]
