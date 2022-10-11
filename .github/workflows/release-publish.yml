@@ -27,7 +27,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
     - name: Install libgeos
-      run: sudo apt-get install -y install libgeos-dev
+      run: sudo apt-get install -y libgeos-dev
     - name: Build and publish
       run: |
         poetry version $(git describe --tags --abbrev=0)
