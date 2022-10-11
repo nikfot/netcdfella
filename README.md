@@ -102,7 +102,11 @@ To get a local copy up and running follow these simple example steps.
 This software and tested for Python version 3.10.4.
 
 If you need to manually install packages:
-
+- Cartopy libgeos
+  ```sh
+  apt get install libgeos-dev
+  ```
+  
 - requirements
   ```sh
   pip install -r requirements.txt
@@ -118,6 +122,13 @@ If you wish to make use of the pyproject.toml you need to install poetry:
 ### Installation
 
 _You can install from source or from pypi_
+
+#### PYPI
+
+Use PYPI to pip install the project:
+
+    ```sh
+    pip install netcdfella
 
 #### Source
 
@@ -140,14 +151,6 @@ _You can install from source or from pypi_
    ```sh
    netcdfella --help
    ```
-
-#### PYPI
-
-Use PYPI to pip install the project:
-
-    ```sh
-    pip install netcdfella
-    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
