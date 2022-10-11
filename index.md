@@ -8,7 +8,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/nikfot/netcdfella">
-    <img src="https://github.com/nikfot/netcdfella/blob/master/assets/netcdfella_logo.png" alt="Logo" height="300" width="auto">
+    <img src="https://github.com/nikfot/netcdfella/blob/gh-pages/assets/netcdfella_logo.png?raw=true" alt="Logo" height="300" width="auto">
   </a>
 
   <h3 align="center">NetcdFella</h3>
