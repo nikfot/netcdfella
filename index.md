@@ -8,7 +8,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/nikfot/netcdfella">
-    <img src="assets/netcdfella_logo.png" alt="Logo" height="300" width="auto">
+    <img src="https://github.com/nikfot/netcdfella/blob/master/assets/netcdfella_logo.png" alt="Logo" height="300" width="auto">
   </a>
 
   <h3 align="center">NetcdFella</h3>
@@ -141,6 +141,14 @@ _You can install from source or from pypi_
    netcdfella --help
    ```
 
+#### PYPI
+
+Use PYPI to pip install the project:
+
+    ```sh
+    pip install netcdfella
+    ```
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
@@ -262,4 +270,4 @@ This tool is created as part of my postgrad studies "Space Technologies Applicat
 [python]: https://img.shields.io/badge/python-yellow?style=for-the-badge&logo=Python
 [python-url]: https://www.python.org/
 [poetry]: https://img.shields.io/badge/poetry-blue?style=for-the-badge&logo=Poetry
-[poetry-url]: https://upstreamsystems.atlassian.net/jira/your-work
+[poetry-url]: https://python-poetry.org/
