@@ -16,14 +16,18 @@ on:
 jobs:
   publish:
 
-    runs-on: nikfot/ci:ubuntu22
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v3
+    - name: Update apt
+      run: sudo apt-get update && sudo apt-get -y upgrade
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install poetry
+    - name: Install libgeos
+      run: sudo apt-get install -y install libgeos-dev
     - name: Build and publish
       run: |
         poetry version $(git describe --tags --abbrev=0)
