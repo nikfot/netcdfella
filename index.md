@@ -103,6 +103,11 @@ This software and tested for Python version 3.10.4.
 
 If you need to manually install packages:
 
+- Cartopy libgeos
+  ```sh
+  apt install libgeos-dev
+  ```
+
 - requirements
   ```sh
   pip install -r requirements.txt
@@ -119,6 +124,13 @@ If you wish to make use of the pyproject.toml you need to install poetry:
 
 _You can install from source or from pypi_
 
+#### PYPI
+
+Use PYPI to pip install the project:
+    ```sh
+    pip install netcdfella
+    ```
+
 #### Source
 
 1. Clone the repo
@@ -130,24 +142,13 @@ _You can install from source or from pypi_
    poetry install
    ```
 3. Run `netcdfella` to see the help with available choices:
-
    ```sh
    netcdfella
    ```
-
    or
-
    ```sh
    netcdfella --help
    ```
-
-#### PYPI
-
-Use PYPI to pip install the project:
-
-    ```sh
-    pip install netcdfella
-    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -156,13 +157,10 @@ Use PYPI to pip install the project:
 ## Usage
 
 You can use the netcdfella to get a better description of the available choices:
-
     ```sh
     netcdfella
     ```
-
     or
-
     ```sh
     netcdfella --help
     ```
@@ -170,7 +168,6 @@ You can use the netcdfella to get a better description of the available choices:
 ### convert
 
 Use netcdfella to convert a single document or all documents in a directory:
-
     ```sh
     netcdfella convert "/path/to/documents" -k "ascii,graph,scatter,marks" -md "flashes" -mv "radiance"
     ```
@@ -188,7 +185,6 @@ excluded from conversion.
 ### watch
 
 Use netcdfella to watch over a directory and convert files upon creation:
-
     ```sh
     netcdfella watch "/path/to/documents" -k "ascii,graph,scatter,marks" -md "flashes" -mv "radiance"
     ```
