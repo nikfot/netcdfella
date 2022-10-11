@@ -129,7 +129,8 @@ Use PYPI to pip install the project:
 
     ```sh
     pip install netcdfella
-
+    ```
+    
 #### Source
 
 1. Clone the repo
