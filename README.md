@@ -126,7 +126,6 @@ _You can install from source or from pypi_
 #### PYPI
 
 Use PYPI to pip install the project:
-
     ```sh
     pip install netcdfella
     ```
@@ -142,13 +141,11 @@ Use PYPI to pip install the project:
    poetry install
    ```
 3. Run `netcdfella` to see the help with available choices:
-
    ```sh
    netcdfella
    ```
 
    or
-
    ```sh
    netcdfella --help
    ```
@@ -160,13 +157,10 @@ Use PYPI to pip install the project:
 ## Usage
 
 You can use the netcdfella to get a better description of the available choices:
-
     ```sh
     netcdfella
     ```
-
     or
-
     ```sh
     netcdfella --help
     ```
@@ -174,7 +168,6 @@ You can use the netcdfella to get a better description of the available choices:
 ### convert
 
 Use netcdfella to convert a single document or all documents in a directory:
-
     ```sh
     netcdfella convert "/path/to/documents" -k "ascii,graph,scatter,marks" -md "flashes" -mv "radiance"
     ```
@@ -192,7 +185,6 @@ excluded from conversion.
 ### watch
 
 Use netcdfella to watch over a directory and convert files upon creation:
-
     ```sh
     netcdfella watch "/path/to/documents" -k "ascii,graph,scatter,marks" -md "flashes" -mv "radiance"
     ```
